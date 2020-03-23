@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace:与Mapper接口路径一致的  -->
+<mapper namespace="com.jt.mapper.UserMapper">
+	
+	<!--id:必须和接口中的方法一致  
+		resultType:返回值类型  包名.类名
+	-->
+	<select id="findAll" resultType="User">
+		select * from user
+	</select>
+	
+	<!--
+		表(user_id,user_name,user_age)
+		对象(userId,userName,userAge)
+		
+		驼峰规则映射.:
+		user_id 去除"_" ~~~~~首字母大写~~~~~~userId
+		可以实现自动的对象属性赋值.
+		
+		注意事项:
+			一旦开启了驼峰规则映射方式,必须按照要求映射.
+	  -->
+	
+	
+	<!--常规转义字符
+		> &gt;
+		< &lt;
+		<![CDATA[]]>
+	  -->
+	
+	<select id="findByAge" resultType="User">
+		<![CDATA[SELECT * FROM USER WHERE age < #{minAge} OR age>#{maxAge}]]>
+	</select>
+	
+	<!--动态生成Sql where动态的
+	
+		if:test其中标识的是对象的属性
+		where : 
+			1.可以动态添加
+			2.可以动态的删除多余的and
+	 -->
+	<select id="findUser" resultType="User">
+		select * from user 
+		<where>
+			<if test="id   !=null"> id = #{id}</if>
+			<if test="name !=null"> and name = #{name}</if>
+			<if test="age  !=null"> and age= #{age}</if>
+			<if test="sex  !=null"> and sex = #{sex}</if>
+		</where>
+	
+	</select>
+	
+	<!--批量删除  id[]~~~~1 2 3 4
+		collection: 
+			参数数组: array
+			参数List集合: list
+			参数map集合: map中key
+	-->
+	<delete id="deleteUsers">
+		delete from user where id in (
+		<foreach collection="array" item="id"
+		 separator=",">
+		 	#{id}
+		 </foreach>
+		)
+	</delete>
+	
+	
+	
+	
+</mapper>
