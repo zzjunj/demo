@@ -1,0 +1,36 @@
+server:
+  port: 8090
+  servlet:
+    context-path: /
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/jtdb?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+
+  mvc:         #引入mvn配置
+    view:
+      prefix: /WEB-INF/     # /默认代表根目录 src/main/webapp
+      suffix: .jsp
+
+#SpringBoot整合Mybatis-plus
+mybatis-plus:
+    #定义别名包
+  type-aliases-package: com.jt.pojo
+    #加载mapper映射文件
+  mapper-locations: classpath:/mybatis/mappers/*.xml
+    #开启驼峰映射
+  configuration:
+    map-underscore-to-camel-case: true
+
+
+
+#添加sql日志信息
+logging:  level:    com.jt.mapper: debug
+
+
+
+
+  
+  
